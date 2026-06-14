@@ -1,6 +1,8 @@
-ablation,combined_stress_mean_success,ci95_success,interpretation
-full_proposed_branch_mechanism,0.6717,0.0124,all components
-minus_branch_atlas,0.5600,0.0061,removes explicit unrealized futures
-minus_tail_risk_objective,0.5783,0.0189,uses mean predicted value only
-minus_diagnostic_probe,0.5976,0.0174,does not actively test ambiguous physical modes
-minus_failure_memory,0.6195,0.0191,does not reuse repaired beliefs
+method,mean_task_success,ci95_task_success,mean_deployment_violation,ci95_deployment_violation,mean_intervention_rate,ci95_intervention_rate,mean_control_distortion,ci95_control_distortion,mean_recovery_success,ci95_recovery_success,mean_unshielded_violation,ci95_unshielded_violation,mean_unshielded_success,ci95_unshielded_success,mean_filter_dependence,ci95_filter_dependence,mean_transfer_violation,ci95_transfer_violation,mean_oracle_regret,ci95_oracle_regret,mean_learned_boundary,ci95_learned_boundary,mean_boundary_f1,ci95_boundary_f1,units
+cbf_feedback_only,0.56696,0.01990,0.25050,0.02220,0.74454,0.04382,0.23277,0.01538,0.56944,0.02601,0.50496,0.02567,0.24603,0.02062,0.74454,0.04382,0.49206,0.02614,0.79082,0.02609,0.20225,0.00006,0.64803,0.04436,28
+clipping_feedback_only,0.35913,0.02703,0.43750,0.02568,0.74256,0.04333,0.28224,0.01949,0.48611,0.02845,0.60169,0.02347,0.16468,0.02159,0.74256,0.04333,0.64137,0.01905,1.11620,0.03973,0.09481,0.00003,0.79427,0.03445,28
+full_boundary_learning_filter,0.46429,0.02153,0.39137,0.02015,0.45734,0.04567,0.11983,0.01311,0.60565,0.02822,0.45238,0.03145,0.28770,0.02608,0.45734,0.04567,0.42560,0.02310,0.89131,0.02845,0.26545,0.00008,0.51339,0.04531,28
+minus_boundary_margin_loss,0.54712,0.02860,0.28323,0.02447,0.82688,0.03397,0.21645,0.01255,0.59077,0.02526,0.53571,0.02443,0.20933,0.01980,0.82688,0.03397,0.56300,0.02017,0.84327,0.03987,0.15801,0.00004,0.69932,0.04120,28
+minus_counterfactual_labels,0.49901,0.02300,0.30208,0.02247,0.79762,0.03671,0.22182,0.01336,0.60119,0.03045,0.54117,0.02878,0.21726,0.02054,0.79762,0.03671,0.56300,0.03154,0.89058,0.03548,0.17065,0.00005,0.67598,0.04709,28
+minus_intervention_gradient,0.51240,0.02698,0.31696,0.02091,0.69891,0.04524,0.18915,0.01479,0.56548,0.03223,0.52728,0.02816,0.21875,0.02760,0.69891,0.04524,0.50992,0.02500,0.86558,0.03164,0.19593,0.00006,0.63748,0.04767,28
+minus_unshielded_replay,0.51885,0.02458,0.32440,0.02101,0.70089,0.03587,0.19304,0.01246,0.60962,0.02763,0.51587,0.02844,0.22520,0.02036,0.70089,0.03587,0.49851,0.02382,0.86700,0.03208,0.20857,0.00006,0.62051,0.04303,28

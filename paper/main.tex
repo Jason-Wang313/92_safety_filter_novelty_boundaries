@@ -4,42 +4,119 @@
 \usepackage{hyperref}
 \usepackage{url}
 \usepackage{booktabs}
-\title{Safety Filter Novelty Boundaries: ICLR Main-Conference Gate Archive}
+\usepackage{graphicx}
+
+\title{Safety Filter Novelty Boundaries: A Negative ICLR-Main Evidence Audit}
 \author{Anonymous Authors}
+
 \begin{document}
 \maketitle
+
 \begin{abstract}
-This document is not an ICLR main-conference submission. It is the v3 main-conference gate for a generated robotics draft about safe robot learning. The original research bet was: Identify when safety filters change the learned mechanism rather than merely clipping actions. After a stricter hostile review, the honest terminal decision is \textbf{KILL/ARCHIVE}. Submission-hardening version: v3.
+This paper is not submission-ready for ICLR main. The original research bet was that safety filters are novel only when they change the learned policy mechanism rather than merely clip unsafe actions at deployment. We rebuilt the repository around a deterministic safe-control learning benchmark with four robot tasks, five safety-boundary shifts, seven seeds, nine safety-filter methods, seven ablations, and stress sweeps. The evidence is useful but terminally negative. On combined safety stress, the proposed boundary-learning filter reduces unshielded post-training violation from 0.547 for the strongest non-oracle mechanism baseline to 0.455, and reduces filter dependence from 0.769 to 0.467. However, it loses deployed task success (0.456 versus 0.547) and has higher deployed violation (0.392 versus 0.287). Robust MPC and CBF also dominate deployed success and safety. The honest terminal decision is \textbf{KILL/ARCHIVE}.
 \end{abstract}
 
-\section{Gate Decision}
-The v2 paper was workshop-only. Under the active ICLR-main standard, that is insufficient. The local artifacts contain synthetic multi-seed diagnostics, but no real-robot validation, high-fidelity simulator benchmark, trained world-action model, implemented real baselines, or manual full-paper related-work synthesis. These missing items are not recoverable by editing text or rerunning the synthetic script.
+\section{Question}
+Safety filters are often evaluated by whether the shielded robot avoids unsafe actions. This draft asked a sharper question: when is a safety filter actually a learning mechanism, and when is it only a runtime clipper? The distinction matters because a policy that is safe only while shielded may fail when transferred, distilled, or deployed with a different safe set.
 
-\section{Fatal ICLR-Main Blockers}
-\begin{itemize}
-\item Evidence is synthetic and generated from a shared batch template.
-\item Baselines are diagnostic probability models, not implemented competing robot systems.
-\item Ablations do not correspond to a trained model checkpoint.
-\item No hardware, high-fidelity benchmark, qualitative rollouts, or failure videos are available.
-\item Related work is based on pool slices and hostile metadata, not a manual full-paper synthesis.
-\item Claims would be misleading if framed as ICLR-main empirical robotics evidence.
-\end{itemize}
+The hostile prior-work boundary is crowded. Control barrier functions, robust MPC shields, learned CBFs, conformal safety filters, recovery policies, safe RL, and passive mechanical safety already address safe robot learning. A credible contribution must therefore show that the policy itself changes, not merely that a filter intercepts unsafe actions.
 
-\section{Hostile Prior-Work Pressure}
-The closest local hostile records include:
-\begin{itemize}
-\item Safe robot arm with safe joint mechanism using nonlinear spring system for collision safety (2009)
-\item Safe joint mechanism using inclined link with springs for collision safety and positioning accuracy of a robot arm (2010)
-\item End-to-End Safe Reinforcement Learning through Barrier Functions for Safety-Critical Continuous Control Tasks (2019)
-\item Transformer-based human-motion forecasting coupled with safe reinforcement learning for telepresence robot co-navigation (2026)
-\item Safe robust multi-agent reinforcement learning with neural control barrier functions and safety attention mechanism (2025)
-\end{itemize}
-These works make generic world models, uncertainty, model-based planning, and robot policy robustness crowded. Without real empirical evidence, the remaining novelty boundary is too weak for ICLR main.
+\section{Benchmark}
+Each run simulates repeated policy-learning episodes near a safety boundary. The simulator tracks nominal action risk, filtered action, intervention reason, control distortion, safety violation, learned boundary state, post-training unshielded behavior, and transfer to shifted safety boundaries.
 
-\section{What Remains Useful}
-The archive is still useful as an idea seed and reproducibility scaffold. The synthetic code, stress-test CSVs, reviewer attacks, and novelty-boundary docs can inform a future project. The correct next step is not more paper polishing; it is new evidence: implemented models, real baselines, manual related work, and robot or high-fidelity simulator validation.
+The tasks are narrow-corridor navigation, human-workspace reaching, fragile-object pushing, and dynamic-obstacle crossing. The splits are nominal boundary, tightened safe set, delayed dynamics, boundary shift, and combined safety stress. The main run contains 90,720 episode-level rollouts; ablations contain 14,112 rollouts; stress sweeps contain 44,352 rollouts. All evidence is regenerated with:
+\begin{verbatim}
+python src\run_experiment.py
+\end{verbatim}
 
-\section{Terminal Action}
-Decision: \textbf{KILL/ARCHIVE for ICLR main}. Do not submit this paper to ICLR main in the current form. Revival requires a substantially new empirical project.
+\section{Compared Methods}
+The methods are an unfiltered policy, action clipping, geometric projection, CBF safety filtering, robust MPC shielding, conformal uncertainty shielding, recovery-policy shielding, the proposed boundary-learning filter, and an oracle boundary teacher. The proposed method receives counterfactual boundary labels and intervention-gradient feedback during learning, aiming to reduce later unshielded violations and filter dependence.
+
+\section{Combined-Stress Results}
+Table~\ref{tab:combined} shows the central tradeoff. The proposed filter is the best non-oracle method on unshielded post-training violation and filter dependence. That supports the diagnostic idea that some filters can change the learned policy. But this is not enough: the method loses deployed task success and deployed safety to standard shields.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Method & Success & Deployed viol. & Unshielded viol. & Dependence \\
+\midrule
+Unfiltered policy & 0.184 & 0.735 & 0.622 & \textbf{0.000} \\
+Action clipping & 0.329 & 0.461 & 0.645 & 0.847 \\
+Geometric projection & 0.440 & 0.345 & 0.609 & 0.903 \\
+CBF safety filter & 0.608 & 0.176 & 0.614 & 0.949 \\
+Robust MPC shield & \textbf{0.646} & \textbf{0.155} & 0.584 & 0.941 \\
+Conformal shield & 0.585 & 0.169 & 0.571 & 0.984 \\
+Recovery shield & 0.547 & 0.287 & 0.547 & 0.769 \\
+Proposed boundary learning & 0.456 & 0.392 & \textbf{0.455} & 0.467 \\
+Oracle teacher & 0.462 & 0.416 & 0.361 & 0.199 \\
+\bottomrule
+\end{tabular}
+\caption{Combined safety stress. Lower violation and dependence are better. The proposed method improves post-training unshielded safety but loses deployed task success and deployed safety.}
+\label{tab:combined}
+\end{table}
+
+The paired comparison uses recovery-policy shielding as the strongest non-oracle baseline for post-training unshielded safety. The proposed method improves unshielded safety by 0.092 with CI 0.028 and reduces filter dependence by 0.302 with CI 0.027. But it reduces task success by 0.091 and worsens deployed violation by 0.106. Those failures trigger the terminal archive decision.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{../figures/safety_filter_deployment.png}
+\caption{Deployment metrics on combined safety stress. Conventional CBF/MPC shields dominate deployed safety and success.}
+\label{fig:deployment}
+\end{figure}
+
+\section{Mechanism-Change Evidence}
+Figure~\ref{fig:mechanism} isolates the mechanism-change question. The proposed method is meaningfully less dependent on the shield and has lower unshielded violation than CBF, MPC, conformal, and recovery shields. This is the useful part of the audit. However, its boundary F1 is not strong, and its transfer violation remains nontrivial at 0.437. The learned mechanism is partial, not submission-ready.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{../figures/safety_filter_mechanism.png}
+\caption{Mechanism-change metrics. The proposed method reduces unshielded violations and dependence but does not prove a robust transferable boundary representation.}
+\label{fig:mechanism}
+\end{figure}
+
+\section{Ablations}
+Table~\ref{tab:ablations} shows that the full boundary-learning filter has the best unshielded safety among ablations, but not the best deployed success. CBF-feedback-only reaches 0.567 deployed success versus 0.464 for the full method. This means the mechanism helps one target metric while hurting the deployed robotics objective.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Ablation & Success & Deployed viol. & Unshielded viol. & Dependence \\
+\midrule
+Full boundary learning & 0.464 & 0.391 & \textbf{0.452} & \textbf{0.457} \\
+Minus counterfactual labels & 0.499 & 0.302 & 0.541 & 0.798 \\
+Minus intervention gradient & 0.512 & 0.317 & 0.527 & 0.699 \\
+Minus unshielded replay & 0.519 & 0.324 & 0.516 & 0.701 \\
+Minus boundary margin loss & 0.547 & 0.283 & 0.536 & 0.827 \\
+Clipping feedback only & 0.359 & 0.438 & 0.602 & 0.743 \\
+CBF feedback only & \textbf{0.567} & \textbf{0.251} & 0.505 & 0.745 \\
+\bottomrule
+\end{tabular}
+\caption{Ablations on combined safety stress. The full mechanism improves unshielded safety but loses deployed task success to CBF-feedback-only.}
+\label{tab:ablations}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{../figures/safety_filter_ablation.png}
+\caption{Ablation audit. The proposed mechanism supports unshielded safety but not a clean all-metric improvement.}
+\label{fig:ablation}
+\end{figure}
+
+\section{Stress Sweep}
+At maximum stress, the proposed method keeps unshielded violation at 0.463, better than recovery shielding at 0.528 and robust MPC at 0.573. However, deployed success remains lower than CBF and robust MPC, and deployed violations remain much higher. The stress curve therefore does not rescue the paper: the mechanism is interesting but not a complete robotics contribution.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{../figures/safety_filter_stress_sweep.png}
+\caption{Stress sweep by post-training unshielded safety. The proposed method helps the mechanism metric but not deployed success/safety.}
+\label{fig:stress}
+\end{figure}
+
+\section{Decision}
+The rebuilt evidence supports a limited insight: filters that expose counterfactual boundary information can reduce later unshielded violations and filter dependence. But the paper is not ICLR-main ready. It loses deployed safety and success to established CBF/MPC-style shields, has only local simulated evidence, and does not show robust transferable boundary recognition. The terminal recommendation is \textbf{KILL/ARCHIVE}. Revival would require a real or accepted high-fidelity safety-control benchmark where mechanism-change improvements do not sacrifice deployed performance.
 
 \end{document}
