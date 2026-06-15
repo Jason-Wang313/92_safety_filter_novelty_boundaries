@@ -1,10 +1,12 @@
 # 92 Safety Filter Novelty Boundaries
 
-Submission-hardening version: v4
+Submission-hardening version: v4.1 rerun audit
 
 Terminal decision: KILL_ARCHIVE for ICLR main conference.
 
 This repository now contains a deterministic safe-control learning evidence audit for the claim that safety filters are novel only when they change the learned policy mechanism rather than merely clip actions. The rebuilt benchmark includes four tasks, five safety-boundary shifts, seven seeds, nine filters/controllers, seven ablations, and stress sweeps.
+
+The 2026-06-15 continuation rerun reproduced the same terminal decision: the mechanism-change signal is real, but deployed safety and success fail the ICLR-main gate.
 
 ## Key Result
 

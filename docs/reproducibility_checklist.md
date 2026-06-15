@@ -1,6 +1,7 @@
 # Reproducibility Checklist
 
 ## What Reproduces
+- [x] 2026-06-15 rerun log: `logs/92_safety_filter_novelty_boundaries_continuation_rerun_20260615.log`
 - [x] `python src/run_experiment.py`
 - [x] `results/metrics.csv`
 - [x] `results/raw_seed_metrics.csv`
