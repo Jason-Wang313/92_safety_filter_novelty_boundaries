@@ -192,3 +192,24 @@ Attack: No meaningful recoverable ICLR-main issue remains after archiving.
 Verdict: Terminal condition reached.
 
 Action: Mark KILL_ARCHIVE and stop.
+
+## v4 Rerun Gate Round 28
+Attack: The safety-filter mechanism claim might be submission-ready because unshielded post-training safety improves after rerun.
+
+Verdict: Failed for ICLR main. The proposed method improves unshielded safety by `0.09226 +/- 0.02766` versus `recovery_policy_shield`, but this is only one gate.
+
+Action: Preserve the mechanism-change result as a local finding, not as submission readiness.
+
+## v4 Rerun Gate Round 29
+Attack: Reduced filter dependence might compensate for weaker deployed performance.
+
+Verdict: Failed. Deployed task success is `0.45635` for the proposed method versus `0.64633` for `robust_mpc_shield`; deployed violation is `0.39236` versus `0.15526`.
+
+Action: Keep KILL_ARCHIVE.
+
+## v4 Rerun Gate Round 30
+Attack: Ablations might cleanly validate the full boundary-learning mechanism.
+
+Verdict: Mixed and insufficient. The full method has the best unshielded safety among ablations, but `cbf_feedback_only` reaches higher deployed success and lower deployed violation.
+
+Action: Do not claim ICLR-main readiness without real or accepted high-fidelity safety-control evidence.

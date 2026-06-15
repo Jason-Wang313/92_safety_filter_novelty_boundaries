@@ -24,7 +24,7 @@ The hostile prior-work boundary is crowded. Control barrier functions, robust MP
 \section{Benchmark}
 Each run simulates repeated policy-learning episodes near a safety boundary. The simulator tracks nominal action risk, filtered action, intervention reason, control distortion, safety violation, learned boundary state, post-training unshielded behavior, and transfer to shifted safety boundaries.
 
-The tasks are narrow-corridor navigation, human-workspace reaching, fragile-object pushing, and dynamic-obstacle crossing. The splits are nominal boundary, tightened safe set, delayed dynamics, boundary shift, and combined safety stress. The main run contains 90,720 episode-level rollouts; ablations contain 14,112 rollouts; stress sweeps contain 44,352 rollouts. All evidence is regenerated with:
+The tasks are narrow-corridor navigation, human-workspace reaching, fragile-object pushing, and dynamic-obstacle crossing. The splits are nominal boundary, tightened safe set, delayed dynamics, boundary shift, and combined safety stress. The main run contains 90,720 episode-level rollouts; ablations contain 14,112 rollouts; stress sweeps contain 44,352 rollouts. A 2026-06-15 continuation rerun reproduced the same terminal gate outcome. All evidence is regenerated with:
 \begin{verbatim}
 python src\run_experiment.py
 \end{verbatim}
@@ -117,6 +117,6 @@ At maximum stress, the proposed method keeps unshielded violation at 0.463, bett
 \end{figure}
 
 \section{Decision}
-The rebuilt evidence supports a limited insight: filters that expose counterfactual boundary information can reduce later unshielded violations and filter dependence. But the paper is not ICLR-main ready. It loses deployed safety and success to established CBF/MPC-style shields, has only local simulated evidence, and does not show robust transferable boundary recognition. The terminal recommendation is \textbf{KILL/ARCHIVE}. Revival would require a real or accepted high-fidelity safety-control benchmark where mechanism-change improvements do not sacrifice deployed performance.
+The rebuilt and rerun evidence supports a limited insight: filters that expose counterfactual boundary information can reduce later unshielded violations and filter dependence. But the paper is not ICLR-main ready. It loses deployed safety and success to established CBF/MPC-style shields, has only local simulated evidence, and does not show robust transferable boundary recognition. The terminal recommendation is \textbf{KILL/ARCHIVE}. Revival would require a real or accepted high-fidelity safety-control benchmark where mechanism-change improvements do not sacrifice deployed performance.
 
 \end{document}

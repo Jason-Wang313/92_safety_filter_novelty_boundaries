@@ -18,4 +18,4 @@
 - [ ] Manual related-work synthesis.
 - [ ] Paper-specific qualitative figures.
 
-Decision: v4 evidence audit still fails ICLR main empirical-rigor gate; archive.
+Decision: v4.1 rerun audit still fails ICLR main empirical-rigor gate; archive.
