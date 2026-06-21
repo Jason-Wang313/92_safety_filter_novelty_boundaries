@@ -1,4 +1,25 @@
-case,observed_failure,implication
-boundary_shape_shift,counterfactual labels learned under one boundary shape do not fully transfer to shifted safe sets,mechanism-change evidence is local and needs external safety-boundary validation
-robust_mpc_matches_unshielded_safety,model-based shielding provides comparable post-training safety without the proposed boundary-learning machinery,novelty over robust MPC and CBF-style filters is not decisive
-filter_dependence_not_eliminated,the learned policy still triggers many interventions under combined stress,the filter remains partly a deployment shield rather than a pure learning mechanism
+case_id,seed,task,split,episode,failure_mode,v5_score,v5_success,v5_deployed_violation,v5_unshielded_violation,v5_dependence,best_baseline,best_baseline_success,best_baseline_deployed_violation,best_baseline_utility
+1,0,contact_rich_door_push,actuator_lag_shift,2,mechanism_improves_deployment_worse,0.466101,0,1,0,0.000000,safety_filter_distillation,1,0,0.880398
+2,0,contact_rich_door_push,actuator_lag_shift,3,baseline_success_v5_fails,0.897899,0,0,1,0.280000,recovery_policy_shield,1,1,0.128424
+3,0,contact_rich_door_push,actuator_lag_shift,4,baseline_success_v5_fails,0.574491,0,1,1,0.280000,conformal_uncertainty_shield,1,1,0.054712
+4,0,contact_rich_door_push,actuator_lag_shift,5,baseline_success_v5_fails,0.644024,0,1,1,0.280000,robust_mpc_shield,1,0,0.714157
+5,0,contact_rich_door_push,actuator_lag_shift,6,baseline_success_v5_fails,0.808301,0,1,1,0.280000,safety_filter_distillation,1,0,0.858403
+6,0,contact_rich_door_push,actuator_lag_shift,7,baseline_success_v5_fails,0.559387,0,0,1,0.280000,robust_mpc_shield,1,0,0.717124
+7,0,contact_rich_door_push,actuator_lag_shift,10,baseline_success_v5_fails,0.660093,0,0,1,0.280000,safety_filter_distillation,1,0,0.855687
+8,0,contact_rich_door_push,actuator_lag_shift,15,baseline_success_v5_fails,0.838474,0,1,1,0.280000,robust_mpc_shield,1,0,0.713929
+9,0,contact_rich_door_push,actuator_lag_shift,16,baseline_success_v5_fails,0.654328,0,1,1,0.280000,conformal_uncertainty_shield,1,0,0.692210
+10,0,contact_rich_door_push,actuator_lag_shift,17,baseline_success_v5_fails,0.594390,0,1,1,0.280000,recovery_policy_shield,1,0,0.763970
+11,0,contact_rich_door_push,actuator_lag_shift,18,baseline_success_v5_fails,0.801108,0,1,1,0.280000,conformal_uncertainty_shield,1,0,0.691216
+12,0,contact_rich_door_push,actuator_lag_shift,19,baseline_success_v5_fails,0.881019,0,1,1,0.280000,robust_mpc_shield,1,0,0.727499
+13,0,contact_rich_door_push,actuator_lag_shift,21,baseline_success_v5_fails,0.725070,0,1,1,0.280000,robust_mpc_shield,1,0,0.728852
+14,0,contact_rich_door_push,actuator_lag_shift,22,baseline_success_v5_fails,0.657458,0,1,1,0.280000,safety_filter_distillation,1,0,0.852095
+15,0,contact_rich_door_push,actuator_lag_shift,23,baseline_success_v5_fails,0.715579,0,1,1,0.280000,recovery_policy_shield,1,0,0.758601
+16,0,contact_rich_door_push,actuator_lag_shift,25,baseline_success_v5_fails,0.755773,0,0,0,0.196000,safety_filter_distillation,1,0,0.876291
+17,0,contact_rich_door_push,actuator_lag_shift,26,baseline_success_v5_fails,0.713356,0,1,1,0.280000,robust_mpc_shield,1,0,0.726931
+18,0,contact_rich_door_push,actuator_lag_shift,28,baseline_success_v5_fails,0.708021,0,0,0,0.196000,recovery_policy_shield,1,0,0.806816
+19,0,contact_rich_door_push,actuator_lag_shift,29,baseline_success_v5_fails,0.779871,0,1,1,0.280000,recovery_policy_shield,1,0,0.767994
+20,0,contact_rich_door_push,actuator_lag_shift,31,baseline_success_v5_fails,0.670741,0,0,0,0.196000,robust_mpc_shield,1,0,0.768817
+21,0,contact_rich_door_push,combined_safety_stress,2,baseline_success_v5_fails,0.825361,0,1,1,0.280000,cbf_safety_filter,1,0,0.696496
+22,0,contact_rich_door_push,combined_safety_stress,3,baseline_success_v5_fails,0.832258,0,1,1,0.280000,cbf_safety_filter,1,0,0.693149
+23,0,contact_rich_door_push,combined_safety_stress,4,baseline_success_v5_fails,0.851747,0,1,1,0.280000,recovery_policy_shield,1,0,0.764061
+24,0,contact_rich_door_push,combined_safety_stress,5,baseline_success_v5_fails,0.742227,0,1,1,0.280000,cbf_safety_filter,1,0,0.701351
