@@ -1,46 +1,152 @@
-Paper 92 safety_filter_novelty_boundaries v4 rebuild
+Paper 92 safety_filter_novelty_boundaries v5 expanded audit
 Terminal recommendation: KILL_ARCHIVE
-Reason: deterministic safe-control learning benchmark added; no robot hardware or accepted high-fidelity safety benchmark validation is available.
-Main rollout rows: 90720
-Ablation rollout rows: 14112
-Stress rollout rows: 44352
-Seeds: [0, 1, 2, 3, 4, 5, 6]
+ICLR main ready: no
+Reason: expanded CPU-only safety-filter audit tests whether filters change the learned policy mechanism, but standard CBF/MPC/recovery shields still dominate deployed success and safety and no real robot or accepted high-fidelity safety benchmark evidence exists.
+Main rollout rows: 215040
+Dataset summary rows: 15360
+Main seed-metric rows: 1120
+Main metric rows: 1456
+Main pairwise rows: 1248
+Hard aggregate seed rows: 140
+Hard aggregate metric rows: 182
+Hard aggregate pairwise rows: 156
+Ablation rollout rows: 76800
+Ablation seed rows: 100
+Ablation metric rows: 130
+Stress raw rows: 302400
+Stress seed rows: 840
+Stress metric rows: 1092
+Fixed-risk raw rows: 69120
+Fixed-risk seed rows: 480
+Fixed-risk metric rows: 288
+Fixed-risk pairwise rows: 240
+Negative cases: 24
 
-Combined safety stress:
-unfiltered_policy success=0.18403 ci95=0.01918 deploy_violation=0.73462 intervention=0.00000 unshielded_violation=0.62202 dependence=0.00000 boundary_f1=0.84054 transfer_violation=0.68750
-action_clipping_filter success=0.32937 ci95=0.01846 deploy_violation=0.46081 intervention=0.84722 unshielded_violation=0.64484 dependence=0.84722 boundary_f1=0.85488 transfer_violation=0.69395
-geometric_projection_filter success=0.44048 ci95=0.02231 deploy_violation=0.34474 intervention=0.90278 unshielded_violation=0.60913 dependence=0.90278 boundary_f1=0.83174 transfer_violation=0.67460
-cbf_safety_filter success=0.60764 ci95=0.02362 deploy_violation=0.17609 intervention=0.94940 unshielded_violation=0.61409 dependence=0.94940 boundary_f1=0.81008 transfer_violation=0.62649
-robust_mpc_shield success=0.64633 ci95=0.02185 deploy_violation=0.15526 intervention=0.94097 unshielded_violation=0.58383 dependence=0.94097 boundary_f1=0.76509 transfer_violation=0.59276
-conformal_uncertainty_shield success=0.58532 ci95=0.02496 deploy_violation=0.16865 intervention=0.98413 unshielded_violation=0.57143 dependence=0.98413 boundary_f1=0.77322 transfer_violation=0.61111
-recovery_policy_shield success=0.54712 ci95=0.02281 deploy_violation=0.28671 intervention=0.76935 unshielded_violation=0.54712 dependence=0.76935 boundary_f1=0.71867 transfer_violation=0.54415
-proposed_boundary_learning_filter success=0.45635 ci95=0.02071 deploy_violation=0.39236 intervention=0.46726 unshielded_violation=0.45486 dependence=0.46726 boundary_f1=0.53509 transfer_violation=0.43651
-oracle_boundary_teacher success=0.46230 ci95=0.01819 deploy_violation=0.41567 intervention=0.19940 unshielded_violation=0.36111 dependence=0.19940 boundary_f1=0.38322 transfer_violation=0.31994
-paired unshielded-safety diff vs best baseline recovery_policy_shield=0.09226 ci95=0.02766
-paired task-success diff=-0.09077 ci95=0.03549; paired dependence reduction=0.30208 ci95=0.02674
-
-Ablations:
-cbf_feedback_only success=0.56696 unshielded_violation=0.50496 dependence=0.74454 boundary_f1=0.64803 transfer_violation=0.49206
-clipping_feedback_only success=0.35913 unshielded_violation=0.60169 dependence=0.74256 boundary_f1=0.79427 transfer_violation=0.64137
-full_boundary_learning_filter success=0.46429 unshielded_violation=0.45238 dependence=0.45734 boundary_f1=0.51339 transfer_violation=0.42560
-minus_boundary_margin_loss success=0.54712 unshielded_violation=0.53571 dependence=0.82688 boundary_f1=0.69932 transfer_violation=0.56300
-minus_counterfactual_labels success=0.49901 unshielded_violation=0.54117 dependence=0.79762 boundary_f1=0.67598 transfer_violation=0.56300
-minus_intervention_gradient success=0.51240 unshielded_violation=0.52728 dependence=0.69891 boundary_f1=0.63748 transfer_violation=0.50992
-minus_unshielded_replay success=0.51885 unshielded_violation=0.51587 dependence=0.70089 boundary_f1=0.62051 transfer_violation=0.49851
-
-Combined stress level 1.0:
-cbf_safety_filter success=0.62175 deploy_violation=0.18669 unshielded_violation=0.59172 dependence=0.94643
-conformal_uncertainty_shield success=0.53815 deploy_violation=0.19156 unshielded_violation=0.58442 dependence=0.98864
-oracle_boundary_teacher success=0.46347 deploy_violation=0.42289 unshielded_violation=0.37256 dependence=0.20211
-proposed_boundary_learning_filter success=0.48701 deploy_violation=0.38718 unshielded_violation=0.46266 dependence=0.47565
-recovery_policy_shield success=0.54951 deploy_violation=0.27110 unshielded_violation=0.52841 dependence=0.76786
-robust_mpc_shield success=0.63799 deploy_violation=0.15828 unshielded_violation=0.57305 dependence=0.93182
-
-Gate checks:
-unshielded_gate=True
+Frozen hard-aggregate gate:
+best_success_reference=robust_mpc_shield
+safest_reference=robust_mpc_shield
+best_unshielded_reference=counterfactual_boundary_learning_filter_v5
+lowest_dependence_reference=unfiltered_policy
+best_calibration_reference=counterfactual_boundary_learning_filter_v5
+best_utility_reference=robust_mpc_shield
+best_mechanism_reference=unfiltered_policy
+proposal_success=0.22982
+best_success=0.47122
+proposal_deployed_violation=0.51888
+safest_deployed_violation=0.29701
+proposal_unshielded_violation=0.89726
+best_unshielded_violation=0.89726
+proposal_dependence=0.25775
+lowest_dependence=0.00000
+proposal_boundary_ece=0.10024
+best_boundary_ece=0.10024
+proposal_utility=-0.24424
+best_utility=-0.00351
+proposal_mechanism_utility=0.00049
+best_mechanism_utility=0.02219
+paired_success_lower95=-0.25750
+paired_deployed_violation_upper95=0.24007
+paired_unshielded_violation_upper95=0.00000
+paired_utility_lower95=-0.26567
+paired_mechanism_lower95=-0.03102
 success_gate=False
 deployment_gate=False
-dependence_gate=True
-ablation_gate=True best_ablation=cbf_feedback_only
-stress_gate=True stress_best_baseline=recovery_policy_shield
-oracle_unshielded_violation=0.36111
+mechanism_gate=False
+calibration_gate=True
+utility_gate=False
+ablation_gate=True
+mechanism_best_ablation=full_counterfactual_boundary_v5
+stress_gate=False
+stress_dominated_by=robust_mpc_shield
+fixed_risk_gate=False
+scope_gate=False
+low_signal_high_risk_shift: v5_coverage=0.00000, v5_success=0.00000, v5_deployed_violation=0.00000
+combined_safety_stress: v5_coverage=0.00000, v5_success=0.00000, v5_deployed_violation=0.00000
+
+Hard aggregate metrics:
+unfiltered_policy success=0.03190 deployed=0.93034 unshielded=0.92734 intervention=0.00000 dependence=0.00000 boundary_f1=0.00000 ece=0.63279 transfer=0.93776 utility=-0.61831 mechanism=0.02219
+action_clipping_filter success=0.12565 deployed=0.62383 unshielded=0.92617 intervention=0.96094 dependence=0.78200 boundary_f1=0.88653 ece=0.16365 transfer=0.94167 utility=-0.55493 mechanism=-0.29792
+geometric_projection_filter success=0.18581 deployed=0.57500 unshielded=0.92852 intervention=0.83125 dependence=0.64565 boundary_f1=0.83036 ece=0.23922 transfer=0.93750 utility=-0.41503 mechanism=-0.23332
+cbf_safety_filter success=0.37461 deployed=0.34388 unshielded=0.91875 intervention=0.98828 dependence=0.87853 boundary_f1=0.89589 ece=0.19014 transfer=0.93424 utility=-0.14613 mechanism=-0.31317
+robust_mpc_shield success=0.47122 deployed=0.29701 unshielded=0.92018 intervention=0.98997 dependence=0.84285 boundary_f1=0.89764 ece=0.15436 transfer=0.92409 utility=-0.00351 mechanism=-0.29104
+conformal_uncertainty_shield success=0.33255 deployed=0.37031 unshielded=0.92005 intervention=0.99141 dependence=0.90956 boundary_f1=0.89766 ece=0.27401 transfer=0.92604 utility=-0.22665 mechanism=-0.33476
+recovery_policy_shield success=0.38464 deployed=0.40820 unshielded=0.91641 intervention=0.95755 dependence=0.67078 boundary_f1=0.88648 ece=0.13750 transfer=0.86914 utility=-0.11103 mechanism=-0.20178
+shielded_behavior_cloning success=0.12682 deployed=0.71588 unshielded=0.91250 intervention=0.84948 dependence=0.37037 boundary_f1=0.84117 ece=0.17976 transfer=0.89310 utility=-0.49420 mechanism=-0.09936
+lagrangian_safe_rl success=0.14805 deployed=0.68620 unshielded=0.90898 intervention=0.82526 dependence=0.32848 boundary_f1=0.82896 ece=0.21393 transfer=0.87695 utility=-0.43902 mechanism=-0.07025
+adversarial_safety_critic success=0.13190 deployed=0.67865 unshielded=0.90625 intervention=0.78529 dependence=0.32726 boundary_f1=0.80656 ece=0.27502 transfer=0.86302 utility=-0.45436 mechanism=-0.06553
+safety_filter_distillation success=0.19909 deployed=0.58216 unshielded=0.90573 intervention=0.97331 dependence=0.33141 boundary_f1=0.89013 ece=0.13240 transfer=0.84115 utility=-0.32935 mechanism=-0.05857
+boundary_learning_filter_v4 success=0.16654 deployed=0.60807 unshielded=0.90221 intervention=0.95300 dependence=0.31556 boundary_f1=0.88242 ece=0.11770 transfer=0.80898 utility=-0.37505 mechanism=-0.04046
+counterfactual_boundary_learning_filter_v5 success=0.22982 deployed=0.51888 unshielded=0.89726 intervention=0.97253 dependence=0.25775 boundary_f1=0.89241 ece=0.10024 transfer=0.76693 utility=-0.24424 mechanism=0.00049
+oracle_boundary_teacher success=0.43711 deployed=0.21758 unshielded=0.88190 intervention=0.99935 dependence=0.17010 boundary_f1=0.90004 ece=0.02631 transfer=0.64648 utility=0.19902 mechanism=0.11212
+
+Key paired hard-aggregate differences:
+counterfactual_boundary_learning_filter_v5_minus_robust_mpc_shield task_success: mean=-0.241406 ci95=0.016092 lower95=-0.257499 upper95=-0.225314
+counterfactual_boundary_learning_filter_v5_minus_robust_mpc_shield deployed_violation: mean=0.221875 ci95=0.018198 lower95=0.203677 upper95=0.240073
+counterfactual_boundary_learning_filter_v5_minus_robust_mpc_shield unshielded_violation: mean=-0.022917 ci95=0.005785 lower95=-0.028702 upper95=-0.017132
+counterfactual_boundary_learning_filter_v5_minus_robust_mpc_shield intervention_rate: mean=-0.017448 ci95=0.004800 lower95=-0.022248 upper95=-0.012648
+counterfactual_boundary_learning_filter_v5_minus_robust_mpc_shield intervention_severity: mean=-0.094490 ci95=0.000971 lower95=-0.095461 upper95=-0.093519
+counterfactual_boundary_learning_filter_v5_minus_robust_mpc_shield filter_dependence: mean=-0.585098 ci95=0.002537 lower95=-0.587636 upper95=-0.582561
+counterfactual_boundary_learning_filter_v5_minus_robust_mpc_shield boundary_f1: mean=-0.005233 ci95=0.002562 lower95=-0.007794 upper95=-0.002671
+counterfactual_boundary_learning_filter_v5_minus_robust_mpc_shield boundary_ece: mean=-0.054129 ci95=0.008438 lower95=-0.062567 upper95=-0.045690
+counterfactual_boundary_learning_filter_v5_minus_robust_mpc_shield transfer_violation: mean=-0.157162 ci95=0.009123 lower95=-0.166284 upper95=-0.148039
+counterfactual_boundary_learning_filter_v5_minus_robust_mpc_shield recovery_success: mean=-0.236589 ci95=0.020775 lower95=-0.257364 upper95=-0.215813
+counterfactual_boundary_learning_filter_v5_minus_robust_mpc_shield robust_utility: mean=-0.240730 ci95=0.024943 lower95=-0.265673 upper95=-0.215787
+counterfactual_boundary_learning_filter_v5_minus_robust_mpc_shield mechanism_utility: mean=0.291531 ci95=0.005683 lower95=0.285848 upper95=0.297215
+counterfactual_boundary_learning_filter_v5_minus_robust_mpc_shield action_regret: mean=0.003261 ci95=0.007931 lower95=-0.004670 upper95=0.011193
+counterfactual_boundary_learning_filter_v5_minus_boundary_learning_filter_v4 task_success: mean=0.063281 ci95=0.008842 lower95=0.054439 upper95=0.072124
+counterfactual_boundary_learning_filter_v5_minus_boundary_learning_filter_v4 deployed_violation: mean=-0.089193 ci95=0.014185 lower95=-0.103378 upper95=-0.075008
+counterfactual_boundary_learning_filter_v5_minus_boundary_learning_filter_v4 unshielded_violation: mean=-0.004948 ci95=0.010362 lower95=-0.015310 upper95=0.005413
+counterfactual_boundary_learning_filter_v5_minus_boundary_learning_filter_v4 intervention_rate: mean=0.019531 ci95=0.006731 lower95=0.012800 upper95=0.026262
+counterfactual_boundary_learning_filter_v5_minus_boundary_learning_filter_v4 intervention_severity: mean=0.012196 ci95=0.000965 lower95=0.011232 upper95=0.013161
+counterfactual_boundary_learning_filter_v5_minus_boundary_learning_filter_v4 filter_dependence: mean=-0.057807 ci95=0.001995 lower95=-0.059801 upper95=-0.055812
+counterfactual_boundary_learning_filter_v5_minus_boundary_learning_filter_v4 boundary_f1: mean=0.009984 ci95=0.003833 lower95=0.006151 upper95=0.013817
+counterfactual_boundary_learning_filter_v5_minus_boundary_learning_filter_v4 boundary_ece: mean=-0.017468 ci95=0.006231 lower95=-0.023699 upper95=-0.011237
+counterfactual_boundary_learning_filter_v5_minus_boundary_learning_filter_v4 transfer_violation: mean=-0.042057 ci95=0.009557 lower95=-0.051614 upper95=-0.032500
+counterfactual_boundary_learning_filter_v5_minus_boundary_learning_filter_v4 recovery_success: mean=0.075651 ci95=0.015004 lower95=0.060647 upper95=0.090655
+counterfactual_boundary_learning_filter_v5_minus_boundary_learning_filter_v4 robust_utility: mean=0.130813 ci95=0.016447 lower95=0.114366 upper95=0.147261
+counterfactual_boundary_learning_filter_v5_minus_boundary_learning_filter_v4 mechanism_utility: mean=0.040956 ci95=0.011080 lower95=0.029876 upper95=0.052036
+counterfactual_boundary_learning_filter_v5_minus_boundary_learning_filter_v4 action_regret: mean=-0.053539 ci95=0.005891 lower95=-0.059430 upper95=-0.047649
+
+Ablation utility:
+full_counterfactual_boundary_v5 success=0.23320 deployed=0.53385 unshielded=0.89609 dependence=0.25736 utility=-0.25010 mechanism=0.00235
+minus_counterfactual_labels success=0.19505 deployed=0.60677 unshielded=0.90951 dependence=0.40916 utility=-0.36732 mechanism=-0.09444
+minus_unshielded_replay success=0.19779 deployed=0.59271 unshielded=0.90781 dependence=0.43333 utility=-0.36191 mechanism=-0.10343
+minus_intervention_gradient success=0.16693 deployed=0.57747 unshielded=0.90456 dependence=0.37607 utility=-0.38583 mechanism=-0.08589
+minus_boundary_margin_loss success=0.18763 deployed=0.60690 unshielded=0.90547 dependence=0.43163 utility=-0.38320 mechanism=-0.10547
+minus_recovery_feasibility success=0.15039 deployed=0.60625 unshielded=0.89909 dependence=0.29086 utility=-0.38950 mechanism=-0.03621
+minus_calibration_layer success=0.20950 deployed=0.52956 unshielded=0.89583 dependence=0.28032 utility=-0.30660 mechanism=-0.02980
+distill_only_boundary success=0.19167 deployed=0.57708 unshielded=0.90299 dependence=0.32696 utility=-0.33246 mechanism=-0.05409
+cbf_feedback_only success=0.36601 deployed=0.35352 unshielded=0.93177 dependence=0.87268 utility=-0.15941 mechanism=-0.32390
+clipping_feedback_only success=0.12513 deployed=0.62187 unshielded=0.92760 dependence=0.77725 utility=-0.55276 mechanism=-0.29589
+
+Maximum combined stress:
+unfiltered_policy success=0.01917 deployed=0.94750 unshielded=0.94444 utility=-0.64228
+action_clipping_filter success=0.09750 deployed=0.63861 unshielded=0.95000 utility=-0.59981
+geometric_projection_filter success=0.13944 deployed=0.59445 unshielded=0.94750 utility=-0.49038
+cbf_safety_filter success=0.31111 deployed=0.36000 unshielded=0.94722 utility=-0.22781
+robust_mpc_shield success=0.41528 deployed=0.30417 unshielded=0.94889 utility=-0.07162
+conformal_uncertainty_shield success=0.26389 deployed=0.39806 unshielded=0.93944 utility=-0.32284
+recovery_policy_shield success=0.32861 deployed=0.41556 unshielded=0.93972 utility=-0.18133
+shielded_behavior_cloning success=0.09583 deployed=0.72750 unshielded=0.94167 utility=-0.54259
+lagrangian_safe_rl success=0.10944 deployed=0.70639 unshielded=0.93278 utility=-0.49989
+adversarial_safety_critic success=0.11472 deployed=0.68250 unshielded=0.93222 utility=-0.48877
+safety_filter_distillation success=0.15361 deployed=0.60500 unshielded=0.92972 utility=-0.39508
+boundary_learning_filter_v4 success=0.12722 deployed=0.63083 unshielded=0.92528 utility=-0.43591
+counterfactual_boundary_learning_filter_v5 success=0.17139 deployed=0.57139 unshielded=0.92639 utility=-0.34202
+
+Fixed-risk budget 0.05:
+low_signal_high_risk_shift counterfactual_boundary_learning_filter_v5 coverage=0.00000 accepted_success=0.00000 accepted_deployed_violation=0.00000 accepted_unshielded_violation=0.00000
+low_signal_high_risk_shift cbf_safety_filter coverage=0.00000 accepted_success=0.00000 accepted_deployed_violation=0.00000 accepted_unshielded_violation=0.00000
+low_signal_high_risk_shift robust_mpc_shield coverage=0.00000 accepted_success=0.00000 accepted_deployed_violation=0.00000 accepted_unshielded_violation=0.00000
+low_signal_high_risk_shift conformal_uncertainty_shield coverage=0.00000 accepted_success=0.00000 accepted_deployed_violation=0.00000 accepted_unshielded_violation=0.00000
+low_signal_high_risk_shift recovery_policy_shield coverage=0.00000 accepted_success=0.00000 accepted_deployed_violation=0.00000 accepted_unshielded_violation=0.00000
+low_signal_high_risk_shift safety_filter_distillation coverage=0.00000 accepted_success=0.00000 accepted_deployed_violation=0.00000 accepted_unshielded_violation=0.00000
+combined_safety_stress counterfactual_boundary_learning_filter_v5 coverage=0.00000 accepted_success=0.00000 accepted_deployed_violation=0.00000 accepted_unshielded_violation=0.00000
+combined_safety_stress cbf_safety_filter coverage=0.00000 accepted_success=0.00000 accepted_deployed_violation=0.00000 accepted_unshielded_violation=0.00000
+combined_safety_stress robust_mpc_shield coverage=0.00000 accepted_success=0.00000 accepted_deployed_violation=0.00000 accepted_unshielded_violation=0.00000
+combined_safety_stress conformal_uncertainty_shield coverage=0.00000 accepted_success=0.00000 accepted_deployed_violation=0.00000 accepted_unshielded_violation=0.00000
+combined_safety_stress recovery_policy_shield coverage=0.00000 accepted_success=0.00000 accepted_deployed_violation=0.00000 accepted_unshielded_violation=0.00000
+combined_safety_stress safety_filter_distillation coverage=0.00000 accepted_success=0.00000 accepted_deployed_violation=0.00000 accepted_unshielded_violation=0.00000
+
+Negative cases: 24
+terminal=KILL_ARCHIVE
